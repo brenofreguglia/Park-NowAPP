@@ -546,57 +546,17 @@ app.post('/cadastro/local', async (req, res) => {
 }); 
 
 
-// ROTA DO CLIENTE
-/*app.get('/api/parknow/cliente', async (req, res) => {
-
-    try {
-        const { id_cliente, nome, tipo_veiculo, endereco, cep, placa_automovel, } = req.body
-        const conexao = await pool.getConnection()
-        let sql = `SELECT *`
-        console.log(sql)
-        const [linhas] = await conexao.execute(sql)
-        conexao.release()
-        res.json({ msg: 'Registro gravado!' })
-    } catch (error) {
-        console.log(`O Erro que ocorreu foi :${error}`)
-        res.status(500).json({ error: 'Deu algum erro no cadastro' })
-    }
-
-}); */
-
-// ROTA PRA DELETAR CONTA DO CLIENTE
-/*app.delete('/api/parknow/cadastro/:id', async (req, res) => {
-    try {
-        const id_passado = req.params.id
-        const conexao = await pool.getConnection()
-        const sql = `DELETE FROM usuarios WHERE id = '${id_passado}'`
-        console.log(sql)
-        const [linhas] = await conexao.execute(sql)
-        conexao.release()
-        res.json({ msg: 'Registro excluído!' })
-
-    } catch (error) {
-        console.log(`O Erro que ocorreu foi :${error}`)
-        res.status(500).json({ error: 'Deu algum erro na exclusão' })
-    }
-}) */
-
-// ROTA PRA EDITAR CONTA DO CLIENTE
-/*app.put('/api/parknow/cadastro/', async (req, res) => {
-    try {
-        const { id, nome, email,sobrenome,username,cpf,endereco,cep,telefone,senha } = req.body
-        const conexao = await pool.getConnection()
-        const sql = `UPDATE usuarios SET nome = '${nome}', sobrenome = '${sobrenome}', username = '${username}', cpf = '${cpf}',
-        endereco = '${endereco}', cep = '${cep}', telefone = '${telefone}', email = '${email}', senha = '${senha}' WHERE id = ${id}`
-        console.log(sql)
-        const [linhas] = await conexao.execute(sql)
-        conexao.release()
-        res.json({ msg: 'Registro gravado!' })
-
-    } catch (error) {
-        console.log(`O Erro que ocorreu foi :${error}`)
-        res.status(500).json({ error: 'Deu algum erro na edição' })
-    }
-}) */
+// // Rota para buscar informações de um local específico e suas vagas
+// app.get('/api/locais/:id', async (req, res) => {
+//     const idLugar = req.params.id;
+//     try {
+//         const [local] = await pool.query('SELECT * FROM local WHERE id_lugar = ?', [idLugar]);
+//         const [vagas] = await pool.query('SELECT * FROM vagas WHERE Id_Estacionamento = ?', [idLugar]);
+//         res.status(200).json({ local: local[0], vagas });
+//     } catch (error) {
+//         console.error('Erro ao buscar detalhes do local:', error);
+//         res.status(500).json({ error: 'Erro ao buscar detalhes do local.' });
+//     }
+// });
 
 app.listen(process.env.SERVE, () => console.log(`ver rodando em porta ${process.env.SERVE}`))

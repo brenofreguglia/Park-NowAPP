@@ -1,30 +1,18 @@
-app.post('/login', async (req, res) => {
-    try {
-        const { email, senha } = req.body;
+Feito:
 
-        if (!email || !senha) {
-            return res.status(400).json({ msg: "Email e Senha são obrigatórios" });
-        }
+|Temos quase todas as telas feitas:
 
-        const hash = crypto.createHash('SHA256').update(senha).digest('hex');
-        const sql = "SELECT email, tipo_usuario FROM cadastro WHERE email = ? AND senha = ?";
-        
-        const connection = await pool.getConnection();
-        const [rows] = await connection.execute(sql, [email, hash]);
-        connection.release();
+    1 - Tela da Splash Screen ✔
+    2 - Tela de Login ✔
+    3 - Tela de cadastro ✔
+    4 - Tela de Menu ✔
+    5 - Tela de Cadastro de veiculos ✔
+    6 - Tela fale conosco ✔
+    7 - Tela para trocar e esquercer senha ✔
+    8 - Tela de Perfil ✔
+    9 - Tela de Editar Perfil ✔
+    10 - Tela de estcionamento  de veiculos 
 
-        if (rows.length === 1) {
-            const tipoUsuario = rows[0].tipo_usuario;
-            if (tipoUsuario === 'admin' || tipoUsuario === 'gerente') {
-                res.json({ msg: "Login realizado com sucesso", email: rows[0].email });
-            } else {
-                res.status(403).json({ msg: "Acesso negado. Você não tem permissão para acessar esta área." });
-            }
-        } else {
-            res.status(401).json({ msg: "Email ou Senha incorreta" });
-        }
-    } catch (error) {
-        console.error("Erro ao autenticar usuário:", error);
-        res.status(500).json({ error: "Erro interno ao processar login" });
-    }
-});
+
+    
+

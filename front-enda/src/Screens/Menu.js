@@ -7,7 +7,7 @@ import MapView, { Marker } from 'react-native-maps';
 import Toast from 'react-native-toast-message';
 import * as Location from 'expo-location';
 
-const rota = "http://10.111.9.26:3000";
+const rota = "http://10.111.9.20:3000";
 
 export default function Menu() {
   const route = useRoute();
@@ -79,7 +79,7 @@ export default function Menu() {
     fetchLocais();
   }, []);
 
-  const handleSearch = async () => {
+  const Busca = async () => {
     try {
       const geocoding = await Location.geocodeAsync(search);
       if (geocoding.length > 0) {
@@ -104,18 +104,18 @@ export default function Menu() {
     }
   };
 
-  const openGoogleMaps = (local) => {
-    if (origin && local) {
-      const originLatLng = `${origin.latitude},${origin.longitude}`;
-      const destinationLatLng = `${local.latitude},${local.longitude}`;
-      const url = `https://www.google.com/maps/dir/?api=1&origin=${originLatLng}&destination=${destinationLatLng}`;
-      Linking.openURL(url).catch((err) => {
-        Alert.alert('Erro', 'Não foi possível abrir o Google Maps: ' + err.message);
-      });
-    } else {
-      Alert.alert('Erro', 'Defina um ponto de origem e um destino antes de tentar navegar.');
-    }
-  };
+  // const openGoogleMaps = (local) => {
+  //   if (origin && local) {
+  //     const originLatLng = `${origin.latitude},${origin.longitude}`;
+  //     const destinationLatLng = `${local.latitude},${local.longitude}`;
+  //     // const url = `https://www.google.com/maps/dir/?api=1&origin=${originLatLng}&destination=${destinationLatLng}`;
+  //     // Linking.openURL(url).catch((err) => {
+  //     //   Alert.alert('Erro', 'Não foi possível abrir o Google Maps: ' + err.message);
+  //     // });
+  //   } else {
+  //     Alert.alert('Erro', 'Defina um ponto de origem e um destino antes de tentar navegar.');
+  //   }
+  // };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -126,7 +126,7 @@ export default function Menu() {
       value={search}
       onChangeText={setSearch}
     />
-    <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+    <TouchableOpacity style={styles.searchButton} onPress={Busca}>
       <Text style={styles.searchButtonText}>OK</Text>
     </TouchableOpacity>
   </View>
@@ -143,7 +143,7 @@ export default function Menu() {
               key={local.id_lugar}
               coordinate={{ latitude: parseFloat(local.latitude), longitude: parseFloat(local.longitude)  }}
               title={local.nome}
-              onPress={() => openGoogleMaps(local)} 
+              // onPress={() => openGoogleMaps(local)} 
             >
               <Image
                 source={require('../../assets/Imgs/customMarker.png')} 
