@@ -31,7 +31,7 @@ const Button = ({texto, acao, color,  width, borda, height, texcolor, margin, pa
 
     <TouchableOpacity  onPress={acao}>
         <Image
-            style = {{width: 50, height: 50, borderRadius: 50, left: 160 , borderColor: "black", borderWidth: 1}}
+            style = {{width: 50, height: 50, borderRadius: 50, borderColor: "#000000", borderWidth: 1,}}
 
             source={require("../../assets/Imgs/Avatar Home.png")}
         />

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Image, View, Text, TextInput, Switch, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { Image, View, Text, TextInput, Switch,Dimensions ,TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
+
+const { width, height } = Dimensions.get('window');
 
 const rota = "http://10.111.9.26"
 
@@ -96,6 +98,7 @@ export default function CadastroVeiculo() {
         </View>
       </View>
 
+      <View style={styles.form}>
       <TextInput
         style={styles.input}
         placeholder="Informe a Placa"
@@ -124,6 +127,7 @@ export default function CadastroVeiculo() {
       <TouchableOpacity style={styles.button} onPress={handleCadastroVeiculo}>
         <Text style={styles.buttonText}>Salvar Alterações</Text>
       </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -156,7 +160,7 @@ const styles = StyleSheet.create({
   switchContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    width: '100%',
+    width: width,
     marginBottom: 30,
     margin: 20,
     backgroundColor: "#d2f0ee",
@@ -199,5 +203,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  form: {
+    backgroundColor: '#73D2C0', // Cor de fundo do formulário
+    padding: 35,
+    width: width,
+    height: height * 0.63,
+    borderRadius: 50,
   },
 });

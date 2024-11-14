@@ -7,7 +7,7 @@ import MapView, { Marker } from 'react-native-maps';
 import Toast from 'react-native-toast-message';
 import * as Location from 'expo-location';
 
-const rota = "http://10.111.9.20:3000";
+const rota = "http://10.111.9.96:3000";
 
 export default function Menu() {
   const route = useRoute();
