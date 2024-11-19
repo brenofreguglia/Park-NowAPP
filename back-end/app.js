@@ -512,6 +512,38 @@ app.get('/vagas', async (req, res) => {
   });
   
 
+  app.get('/api/vagas', async (req, res) => {
+    const { id_lugar } = req.query;
+  
+    if (!id_lugar) {
+      return res.status(400).json({ message: 'ID do local é obrigatório.' });
+    }
+  
+    try {
+      // Query para buscar as vagas associadas ao id_lugar fornecido
+      const query = `
+        SELECT 
+          Descricao, 
+          Status, 
+          Id_Estacionamento
+        FROM vagas 
+        WHERE Id_Estacionamento = ${id_lugar};
+      `;
+  
+        console.log(query)
+      // Executar a consulta usando o valor do parâmetro `id_lugar`
+      const [rows] = await pool.query(query);
+  
+      // Retornar os resultados como JSON
+      res.json(rows);
+    } catch (error) {
+      console.error('Erro ao buscar vagas:', error);
+      res.status(500).json({ message: 'Erro ao buscar vagas.' });
+    }
+  });
+  
+  
+
 // Rota para buscar locais
 app.get('/api/locais', async (req, res) => {
     console.log('Requisição recebida para /api/locais');
@@ -526,6 +558,46 @@ app.get('/api/locais', async (req, res) => {
 });
  
  
+app.get('/api/local', async (req, res) => {
+    try {
+      const { id_lugar } = req.query;
+      const conexao = await pool.getConnection();
+      const [rows] = await conexao.execute('SELECT * FROM local WHERE id_lugar = ?', [id_lugar]);
+      conexao.release();
+  
+      if (rows.length === 0) {
+        return res.status(404).json({ message: 'Local não encontrado' });
+      }
+  
+      const local = rows[0]; // Assumindo que o id_lugar é único
+      res.json(local);
+    } catch (error) {
+      console.error("Erro ao buscar local:", error);
+      res.status(500).json({ error: 'Erro ao buscar o local.' });
+    }
+  });
+  
+app.post('/api/reservarVaga', async (req, res) => {
+    const { id_vaga, status } = req.body;
+  
+    if (!id_vaga || typeof status === 'undefined') {
+      return res.status(400).json({ message: 'Parâmetros inválidos' });
+    }
+  
+    try {
+      const query = 'UPDATE vagas SET Status = ? WHERE Id_Estacionamento = ?';
+      const [result] = await pool.query(query, [status, id_vaga]);
+  
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: 'Vaga não encontrada' });
+      }
+  
+      res.status(200).json({ message: 'Vaga atualizada com sucesso' });
+    } catch (error) {
+      console.error('Erro ao atualizar vaga:', error);
+      res.status(500).json({ message: 'Erro no servidor' });
+    }
+  });
 
 // ROTA PRA CADASTRAR O LOCAL 
 app.post('/cadastro/local', async (req, res) => {

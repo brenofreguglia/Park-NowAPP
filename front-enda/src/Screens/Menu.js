@@ -7,7 +7,7 @@ import MapView, { Marker } from 'react-native-maps';
 import Toast from 'react-native-toast-message';
 import * as Location from 'expo-location';
 
-const rota = "http://10.111.9.96:3000";
+const rota = "http://10.111.9.114:3000";
 
 export default function Menu() {
   const route = useRoute();
@@ -169,24 +169,29 @@ export default function Menu() {
 
       <Texto 
         cor={"black"} 
-        msg={"Selecione o Veiculo:"}
+        msg={"Estacionamentos Disponiveis:"}
         tamanho={20}
-        margin={30}
+        margin={20}
       />
 
-      <View style={styles.vehiclesContainer}>
-        <View style={styles.vehicle}>
-          <Image source={require("../../assets/Imgs/carroMenu.jpg")} style={styles.vehicleImage} />
-          <Texto msg={"CARRO"} tamanho={16} />
-          <Button width={120} borda={30} height={50} color={"#73D2C0"} texto={">>>"} acao={() => navigation.navigate('Estacionamento', { vehicleType: 'carro', id_lugar:1 })}/>
-        </View>
+     {/* Lista de vagas */}
+<View style={styles.vagasContainer}>
+  <Text style={styles.sectionTitle}>Vagas Disponíveis:</Text>
+  {locais.map((local) => (
+    <TouchableOpacity
+      key={local.id_lugar}
+      style={styles.vagaItem}
+      onPress={() => navigation.navigate('Estacionamento', { id_lugar: local.id_lugar, nome: local.nome })}
+    >
+      <Image
+        source={require('../../assets/Imgs/customMarker.png')}
+        style={styles.markerImageText}
+      />
+      <Text style={styles.vagaText}>{local.nome}</Text>
+    </TouchableOpacity>
+  ))}
+</View>
 
-        <View style={styles.vehicle}>
-          <Image source={require("../../assets/Imgs/motoMenu.jpg")} style={styles.vehicleImage} />
-          <Texto msg={"MOTO"} tamanho={16} />
-          <Button width={120} borda={30} height={50} color={"#73D2C0"} texto={">>>"} acao={() => navigation.navigate('Estacionamento', { vehicleType: 'moto', id_lugar:2 })}/>
-        </View>
-      </View>
     </ScrollView>
   );
 }
@@ -203,6 +208,16 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     resizeMode: 'contain',
+  },
+  markerImageText: {
+    width: 20,
+    height: 20,
+    marginRight: 10,
+  },
+  vagaItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
   },
   searchContainer: {
     flexDirection: "row",
@@ -263,5 +278,19 @@ const styles = StyleSheet.create({
     height: 100,
     resizeMode: 'contain',
     marginBottom: 10,
+  },
+  vagasContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 15,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  vagaText: {
+    fontSize: 16,
+    marginVertical: 5,
   },
 });

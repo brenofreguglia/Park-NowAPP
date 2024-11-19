@@ -114,7 +114,8 @@ const App = () => {
         <Drawer.Screen name="Perfil" options={{ drawerItemStyle: { display: 'none' } }}>
           {(props) => <Perfil {...props} handleLogout={handleLogout} />}
         </Drawer.Screen>
-        <Drawer.Screen name='Estacionamento' component={Estacionamento2} options={{ drawerItemStyle: { display: 'none' }}} />
+        <Drawer.Screen name='Estacionamento 2' component={Estacionamento2} options={{ drawerItemStyle: { display: 'none' }}} />
+        <Drawer.Screen name='Estacionamento' component={Estacionamento} options={{ drawerItemStyle: { display: 'none' }}} />
         <Drawer.Screen name="Login" component={Login} options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
         <Drawer.Screen name="Cadastro" component={Cadastro} options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
         <Drawer.Screen name="Fale Conosco" component={FaleConosco} />
