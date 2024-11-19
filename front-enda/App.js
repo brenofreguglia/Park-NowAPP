@@ -16,7 +16,6 @@ import Menu from './src/Screens/Menu';
 import EditarPerfil from './src/Screens/EditarPerfil';
 import SplachScreen from './src/Screens/SplachScreen';
 import Estacionamento from './src/Screens/Estacionamento';
-import Estacionamento2 from './src/Screens/Estacionamento2';
 import EsqueceuSenha from './src/Screens/Senha';
 import VerificarCodigo from './src/Screens/VerificarCodigo';
 import RedefinirSenha from './src/Screens/RedefinirSenha';
@@ -114,7 +113,6 @@ const App = () => {
         <Drawer.Screen name="Perfil" options={{ drawerItemStyle: { display: 'none' } }}>
           {(props) => <Perfil {...props} handleLogout={handleLogout} />}
         </Drawer.Screen>
-        <Drawer.Screen name='Estacionamento 2' component={Estacionamento2} options={{ drawerItemStyle: { display: 'none' }}} />
         <Drawer.Screen name='Estacionamento' component={Estacionamento} options={{ drawerItemStyle: { display: 'none' }}} />
         <Drawer.Screen name="Login" component={Login} options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
         <Drawer.Screen name="Cadastro" component={Cadastro} options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />

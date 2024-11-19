@@ -15,7 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");
-const rota = "http://10.111.9.114:3000";
+const rota = "http://192.168.0.222:3000";
 
 export default function SelecionarVaga() {
   const navigation = useNavigation();

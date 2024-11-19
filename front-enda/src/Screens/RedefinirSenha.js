@@ -5,7 +5,7 @@ import { TextoInput } from '../Componentes/Textos'; // Atualize se houver outros
 import { useNavigation, useRoute } from '@react-navigation/native'; // Importa useRoute para acessar parâmetros da navegação
 
 const { width, height } = Dimensions.get('window');
-const rota = "http://192.168.144.172:3000";
+const rota = "http://192.168.0.222:3000";
 
 export default function RedefinirSenha() {
   const navigation = useNavigation();

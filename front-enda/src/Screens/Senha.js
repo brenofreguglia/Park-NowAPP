@@ -5,7 +5,7 @@ import axios from 'axios';
 const { width, height } = Dimensions.get('window');
 
 const EsqueceuSenha = ({ navigation }) => {
-    const rota = "http://192.168.144.172:3000"; // Certifique-se de que esta URL está correta
+    const rota = "http://192.168.0.222:3000"; // Certifique-se de que esta URL está correta
 
     const [email, setEmail] = useState('');
     const [isFocused, setIsFocused] = useState(false);
