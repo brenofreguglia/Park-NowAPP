@@ -633,6 +633,19 @@ app.put("/api/liberar-vaga", async (req, res) => {
   }
 });
 
+app.put('/api/alugar-vaga', async (req, res) => {
+  const { id } = req.query;
+
+  try {
+    // Atualiza a vaga para 'alugada' no banco de dados
+    await pool.query('UPDATE vagas SET status = ? WHERE id = ?', ['1', id]);
+    res.status(200).send({ message: "Vaga alugada com sucesso." });
+  } catch (error) {
+    console.error("Erro ao alugar a vaga:", error);
+    res.status(500).send({ error: "Erro ao alugar a vaga." });
+  }
+});
+
 
 // // Rota para buscar informações de um local específico e suas vagas
 // app.get('/api/locais/:id', async (req, res) => {

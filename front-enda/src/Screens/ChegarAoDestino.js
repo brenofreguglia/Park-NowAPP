@@ -6,18 +6,21 @@ import {
   TouchableOpacity,
   Dimensions,
   Alert,
+  ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
+
+const rota = "http://10.111.9.114:3000";
 
 export default function ChegarAoDestino() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { vagaId = "" } = route.params || {}; // Verifica valores padrão
+  const { vagaId = "" } = route.params || {};
 
-  const [tempo, setTempo] = useState(3600); // Inicializando com 1 hora (3600 segundos)
+  const [tempo, setTempo] = useState(3600);
 
   useEffect(() => {
     if (tempo <= 0) {
@@ -31,20 +34,17 @@ export default function ChegarAoDestino() {
     }
 
     const interval = setInterval(() => {
-      setTempo((prev) => prev - 1); // Decrementa o tempo a cada segundo
+      setTempo((prev) => prev - 1);
     }, 1000);
 
-    return () => clearInterval(interval); // Limpa o intervalo quando o componente for desmontado ou o tempo acabar
+    return () => clearInterval(interval);
   }, [tempo, navigation, vagaId]);
 
   const liberarVaga = async () => {
     try {
-      const response = await fetch(
-        `http://192.168.0.222:3000/api/liberar-vaga?id=${vagaId}`,
-        {
-          method: "PUT",
-        }
-      );
+      const response = await fetch(`${rota}/api/liberar-vaga?id=${vagaId}`, {
+        method: "PUT",
+      });
       if (!response.ok) throw new Error("Erro ao liberar a vaga.");
     } catch (error) {
       console.error("Erro ao liberar a vaga:", error);
@@ -60,7 +60,6 @@ export default function ChegarAoDestino() {
       .padStart(2, "0")}`;
   };
 
-  // Função que será chamada quando o usuário confirmar que estacionou
   const confirmarEstacionamento = () => {
     Alert.alert(
       "Estacionar",
@@ -68,7 +67,7 @@ export default function ChegarAoDestino() {
       [
         {
           text: "OK",
-          onPress: () => navigation.navigate("Menu"), // Navega para a tela de Menu
+          onPress: () => navigation.navigate("Menu"),
         },
       ]
     );
@@ -76,7 +75,6 @@ export default function ChegarAoDestino() {
 
   return (
     <View style={styles.container}>
-      {/* Botão de voltar */}
       <TouchableOpacity
         onPress={() => navigation.navigate("Menu")}
         style={styles.backButton}
@@ -84,27 +82,27 @@ export default function ChegarAoDestino() {
         <Ionicons name="arrow-back" size={24} color="#000" />
       </TouchableOpacity>
 
-      {/* Nome do Local */}
       <Text style={styles.headerText}>Nome do Local:</Text>
 
-      {/* Ícone de carro */}
-      <Ionicons name="car-outline" size={100} color="#73D2C0" />
+      <Ionicons name="car-outline" size={100} color="#000" />
 
-      {/* Informações */}
-      <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Chegar ao Destino:</Text>
-        {/* Mostra o tempo formatado */}
-        <Text style={styles.timerText}>{formatarTempo(tempo)}</Text>
-        <Text style={styles.priceText}>R$ 15.00</Text>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.infoContainer}>
+          <Text style={styles.infoText}>Chegar ao Destino:</Text>
+          <Text style={styles.timerText}>{formatarTempo(tempo)}</Text>
+          <Text style={styles.priceText}>R$ 15.00</Text>
 
-        {/* Botão para estacionar */}
-        <TouchableOpacity
-          style={styles.button}
-          onPress={confirmarEstacionamento} // Chama a função de confirmação
-        >
-          <Text style={styles.buttonText}>Estacionar</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={confirmarEstacionamento}
+          >
+            <Text style={styles.buttonText}>Estacionar</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -114,7 +112,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#73D2C0",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
   backButton: {
     position: "absolute",
@@ -125,36 +123,54 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "#000",
-    marginTop: 80,
+    marginTop: 200,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   infoContainer: {
     backgroundColor: "#fff",
-    borderRadius: 20,
+    width: width,
+    height: height * 0.6,
     padding: 20,
-    width: width * 0.9,
+    borderTopLeftRadius: 45,
+    borderTopRightRadius: 45,
     alignItems: "center",
-  },
+    marginTop: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -5 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
+  }, 
   infoText: {
     fontSize: 18,
     fontWeight: "bold",
+    color: "#333",
     marginBottom: 10,
   },
   timerText: {
     fontSize: 40,
     fontWeight: "bold",
     color: "#73D2C0",
+    marginVertical: 10,
   },
   priceText: {
     fontSize: 18,
     color: "#73D2C0",
     marginVertical: 20,
+    fontWeight: "bold",
   },
   button: {
     backgroundColor: "#73D2C0",
-    padding: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
     borderRadius: 10,
-    width: width * 0.8,
+    width: "80%",
     alignItems: "center",
+    marginTop: 20,
   },
   buttonText: {
     color: "#fff",
