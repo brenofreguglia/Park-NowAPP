@@ -20,7 +20,8 @@ import EsqueceuSenha from './src/Screens/Senha';
 import VerificarCodigo from './src/Screens/VerificarCodigo';
 import RedefinirSenha from './src/Screens/RedefinirSenha';
 import CadastroCarro from './src/Screens/CadastroCarro';
- 
+import ChegarAoDestino from './src/Screens/ChegarAoDestino';
+
 const LogoTitle = () => {
   const navigation = useNavigation();
  
@@ -114,6 +115,7 @@ const App = () => {
           {(props) => <Perfil {...props} handleLogout={handleLogout} />}
         </Drawer.Screen>
         <Drawer.Screen name='Estacionamento' component={Estacionamento} options={{ drawerItemStyle: { display: 'none' }}} />
+        <Drawer.Screen name='Destino' component={ChegarAoDestino} options={{ drawerItemStyle: { display: 'none' }}} />
         <Drawer.Screen name="Login" component={Login} options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
         <Drawer.Screen name="Cadastro" component={Cadastro} options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
         <Drawer.Screen name="Fale Conosco" component={FaleConosco} />

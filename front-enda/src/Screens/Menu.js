@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, View, Image, ScrollView, TextInput, TouchableOpacity, Alert, Text, Linking } from "react-native";
+import { StyleSheet, View, Image, ScrollView, TextInput, TouchableOpacity, Alert, Text, Linking, Dimensions } from "react-native";
 import { Button } from "../Componentes/Buttons";
 import { Texto } from "../Componentes/Textos";
 import { useRoute, useNavigation } from "@react-navigation/native";
@@ -8,6 +8,7 @@ import Toast from 'react-native-toast-message';
 import * as Location from 'expo-location';
 
 const rota = "http://192.168.0.222:3000";
+const { width, height } = Dimensions.get('window');
 
 export default function Menu() {
   const route = useRoute();
@@ -211,8 +212,9 @@ const styles = StyleSheet.create({
   },
   markerImageText: {
     width: 20,
-    height: 20,
-    marginRight: 10,
+    height: 50,
+    marginRight: 5,
+    padding: 10
   },
   vagaItem: {
     flexDirection: 'row',
@@ -281,13 +283,17 @@ const styles = StyleSheet.create({
   },
   vagasContainer: {
     backgroundColor: "#fff",
-    borderRadius: 10,
+    borderTopEndRadius: 40,
+    borderTopStartRadius: 40,
     padding: 15,
+    width: width, 
+    height: height 
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
+    alignSelf: 'center'
   },
   vagaText: {
     fontSize: 16,

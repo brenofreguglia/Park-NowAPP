@@ -100,10 +100,13 @@ export default function SelecionarVaga() {
             );
             setVagaSelecionada(null); // Limpa a seleção após confirmar
             Alert.alert("Sucesso", "A vaga foi confirmada e está ocupada.");
+            
+            // Redireciona para a tela "Chegada ao Destino"
+            navigation.navigate("Destino", { vagaId: vagaSelecionada });
           },
         },
       ]
-    );  
+    );
   };
 
   return (

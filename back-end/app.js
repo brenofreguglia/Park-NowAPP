@@ -618,6 +618,22 @@ app.post('/cadastro/local', async (req, res) => {
 }); 
 
 
+app.put("/api/liberar-vaga", async (req, res) => {
+  const { id } = req.query;
+
+  try {
+    await pool.query(
+      "UPDATE vagas SET Status = false WHERE Id_Estacionamento = ?",
+      [id]
+    );
+    res.status(200).send({ message: "Vaga liberada com sucesso." });
+  } catch (error) {
+    console.error("Erro ao liberar vaga:", error);
+    res.status(500).send({ error: "Erro ao liberar a vaga." });
+  }
+});
+
+
 // // Rota para buscar informações de um local específico e suas vagas
 // app.get('/api/locais/:id', async (req, res) => {
 //     const idLugar = req.params.id;
