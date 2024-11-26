@@ -15,7 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");
-const rota = "http://10.111.9.114:3000";
+const rota = "http://10.111.9.84:3000";
 
 export default function SelecionarVaga() {
   const navigation = useNavigation();
@@ -38,7 +38,7 @@ export default function SelecionarVaga() {
           const responseVagas = await fetch(
             `${rota}/api/vagas?id_lugar=${id_lugar}`
           );
-          const dataVagas = await responseVagas.json();
+          const dataVagas = await responseVagas.json(); 
 
           // Buscando o local, incluindo a URL da imagem
           const responseLocal = await fetch(
@@ -155,14 +155,20 @@ export default function SelecionarVaga() {
                   ]}
                 >
                   {item.Status ? (
-                    <Ionicons name="car-sport-sharp" size={24} color="#73D2C0" />
+                    <Ionicons
+                      name="car-sport-sharp"
+                      size={24}
+                      color="#73D2C0"
+                    />
                   ) : (
                     <Text style={styles.vagaText}>{item.Descricao}</Text>
                   )}
                 </TouchableOpacity>
               )}
               ListEmptyComponent={
-                <Text style={styles.emptyMessage}>Nenhuma vaga disponível.</Text>
+                <Text style={styles.emptyMessage}>
+                  Nenhuma vaga disponível.
+                </Text>
               }
               contentContainerStyle={styles.listContent}
             />
@@ -194,17 +200,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: width * 0.05,
     paddingVertical: height * 0.03,
     zIndex: 1,
-    backgroundColor: "rgba(255, 255, 255, 0.5)", 
-    borderRadius: 20
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    borderRadius: 20,
   },
   backButton: {
     marginRight: width * 0.03,
-    padding: 8, 
+    padding: 8,
   },
   headerTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#000", 
+    color: "#000",
     paddingHorizontal: 8,
     paddingVertical: 4,
   },

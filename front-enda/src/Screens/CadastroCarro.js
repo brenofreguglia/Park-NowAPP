@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get('window');
 
-const rota = "http://10.111.9.26"
+const rota = "http://10.111.9.84"
 
 export default function CadastroVeiculo() {
   const navigation = useNavigation();

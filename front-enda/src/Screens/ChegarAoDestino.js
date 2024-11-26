@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-  Alert,
-  ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Alert, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import * as Progress from 'react-native-progress';  // Certifique-se de ter esta dependência instalada
 
 const { width, height } = Dimensions.get("window");
 
-const rota = "http://10.111.9.114:3000";
+const rota = "http://10.111.9.84:3000";
 
 export default function ChegarAoDestino() {
   const navigation = useNavigation();
   const route = useRoute();
   const { vagaId = "" } = route.params || {};
 
-  const [tempo, setTempo] = useState(3600);
+  const [tempo, setTempo] = useState(1200);  // Tempo em segundos (20 minutos)
+
+  useEffect(() => {
+    if (vagaId) {
+      setTempo(1200); // Se mudar a vagaId, resetar o tempo
+    }
+  }, [vagaId]);
 
   useEffect(() => {
     if (tempo <= 0) {
@@ -37,7 +36,7 @@ export default function ChegarAoDestino() {
       setTempo((prev) => prev - 1);
     }, 1000);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(interval);  // Limpar o intervalo quando o componente for desmontado
   }, [tempo, navigation, vagaId]);
 
   const liberarVaga = async () => {
@@ -48,6 +47,7 @@ export default function ChegarAoDestino() {
       if (!response.ok) throw new Error("Erro ao liberar a vaga.");
     } catch (error) {
       console.error("Erro ao liberar a vaga:", error);
+      Alert.alert("Erro", "Falha ao liberar a vaga.");
     }
   };
 
@@ -59,6 +59,8 @@ export default function ChegarAoDestino() {
       .toString()
       .padStart(2, "0")}`;
   };
+
+  const calcularProgresso = () => tempo / 1200;
 
   const confirmarEstacionamento = () => {
     Alert.alert(
@@ -73,6 +75,14 @@ export default function ChegarAoDestino() {
     );
   };
 
+  // Função para calcular a cor da barra de progresso com base no tempo restante
+  const calcularCorProgresso = () => {
+    const progress = calcularProgresso();
+    if (progress > 0.5) return "#000000"; // verde
+    if (progress > 0.2) return "#FFCC00"; // amarelo
+    return "#FF6347"; // vermelho
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -84,7 +94,20 @@ export default function ChegarAoDestino() {
 
       <Text style={styles.headerText}>Nome do Local:</Text>
 
-      <Ionicons name="car-outline" size={100} color="#000" />
+      <View style={styles.progressContainer}>
+        <Progress.Circle
+          progress={calcularProgresso()}
+          size={120}
+          color={calcularCorProgresso()} // Cor do progresso baseada no tempo restante
+          unfilledColor="#D2F0EE"
+          borderWidth={0}
+          thickness={5}
+          style={styles.circularProgress}
+        />
+        <View style={styles.iconContainer}>
+          <Ionicons name="car-outline" size={60} color="#000" />
+        </View>
+      </View>
 
       <ScrollView
         contentContainerStyle={styles.scrollContent}
@@ -122,8 +145,21 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#000",
+    color: "#000000",
     marginTop: 200,
+  },
+  progressContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 20,
+  },
+  circularProgress: {
+    marginVertical: 20,
+  },
+  iconContainer: {
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
   },
   scrollContent: {
     flexGrow: 1,
@@ -144,7 +180,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 10,
     elevation: 5,
-  }, 
+  },
   infoText: {
     fontSize: 18,
     fontWeight: "bold",
@@ -170,11 +206,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: "80%",
     alignItems: "center",
-    marginTop: 20,
   },
   buttonText: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
   },
 });

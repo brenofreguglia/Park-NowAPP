@@ -5,28 +5,46 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Texto } from '../Componentes/Textos';
 
-const { height, width } = Dimensions.get('window'); // Obter altura e largura da tela
+const { height, width } = Dimensions.get('window');
+
+const rota = "http://10.111.9.84:3000"; // Certifique-se de que a URL está correta!
 
 export default function Perfil({ handleLogout }) {
   const [userName, setUserName] = useState('');
-
+  const [recentRentals, setRecentRentals] = useState([]);
   const navigation = useNavigation();
 
   useEffect(() => {
-    const fetchUserName = async () => {
+    const fetchData = async () => {
       try {
+        // Carregar nome de usuário
         const nome = await AsyncStorage.getItem('userName');
         if (nome) {
           setUserName(nome);
-        } else {
-          console.error('Nome do usuário não encontrado');
+        }
+
+        // Carregar aluguéis recentes
+        const userId = await AsyncStorage.getItem('userId');
+        if (userId) {
+          const response = await fetch(`${rota}/api/alugueis/${userId}`);
+          if (!response.ok) {
+            throw new Error('Erro ao buscar dados: ' + response.statusText);
+          }
+          const rentals = await response.json();
+          console.log('Resposta da API:', rentals);
+          if (Array.isArray(rentals)) {
+            setRecentRentals(rentals);
+          } else {
+            throw new Error('A resposta da API não contém um array válido.');
+          }
         }
       } catch (error) {
-        console.error('Erro ao obter o nome do usuário do AsyncStorage:', error);
+        console.error('Erro ao buscar dados:', error);
+        Alert.alert('Erro', 'Não foi possível carregar os aluguéis recentes. Por favor, tente novamente mais tarde.');
       }
     };
 
-    fetchUserName();
+    fetchData();
   }, []);
 
   const VoltarTela = () => {
@@ -74,12 +92,9 @@ export default function Perfil({ handleLogout }) {
         <TouchableOpacity style={styles.backButton} onPress={VoltarTela}>
           <MaterialIcons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Image
-          source={require("../../assets/Imgs/Avatar.png")}
-          style={styles.image}
-        />
+        <Image source={require("../../assets/Imgs/Avatar.png")} style={styles.image} />
         <View style={styles.profileDetails}>
-          <Texto cor={"#000000"} tamanho={24} marginR={10} msg={userName}/> 
+          <Texto cor={"#000000"} tamanho={24} marginR={10} msg={userName} />
           <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
             <Text style={styles.editButtonText}>Editar</Text>
           </TouchableOpacity>
@@ -92,7 +107,17 @@ export default function Perfil({ handleLogout }) {
       <View style={styles.card}>
         <Text style={styles.recentRentalsTitle}>Aluguéis Recentes</Text>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {/* Adicione a lista de aluguéis aqui */}
+          {recentRentals.length > 0 ? (
+            recentRentals.map((rental, index) => (
+              <View key={index} style={styles.rentalCard}>
+                <Text style={styles.rentalText}>Local: {rental.nome_local}</Text>
+                <Text style={styles.rentalText}>Vaga: {rental.vaga_selecionada}</Text>
+                <Text style={styles.rentalText}>Data: {new Date(rental.data_aluguel).toLocaleDateString()}</Text>
+              </View>
+            ))
+          ) : (
+            <Text style={styles.noRentalsText}>Nenhum aluguel recente.</Text>
+          )}
         </ScrollView>
       </View>
     </View>
@@ -109,20 +134,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#73D2C0',
     width: '100%',
     alignItems: 'center',
-    paddingVertical: height * 0.05, // 5% da altura da tela
+    paddingVertical: height * 0.05,
     position: 'absolute',
     top: 0,
-    paddingTop: height * 0.05 + 20, // 5% + espaço extra
+    paddingTop: height * 0.05 + 20,
   },
   backButton: {
     position: 'absolute',
-    left: width * 0.05, // 5% da largura da tela
-    top: height * 0.05, // 5% da altura da tela
+    left: width * 0.05,
+    top: height * 0.05,
   },
   image: {
-    height: width * 0.35, // 35% da largura da tela
-    width: width * 0.35, // 35% da largura da tela
-    borderRadius: (width * 0.35) / 2, // Metade da largura para criar um círculo
+    height: width * 0.35,
+    width: width * 0.35,
+    borderRadius: (width * 0.35) / 2,
     margin: 20,
     resizeMode: 'cover',
   },
@@ -146,8 +171,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#D2F0EE',
     borderRadius: 20,
     position: 'absolute',
-    right: width * 0.05, // 5% da largura da tela
-    top: height * 0.05, // 5% da altura da tela
+    right: width * 0.05,
+    top: height * 0.05,
   },
   logoutButtonText: {
     color: '#000000',
@@ -156,9 +181,9 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#ffffff',
     width: '100%',
-    height: height * 1, 
+    height: height * 1,
     position: 'absolute',
-    top: height * 0.4, 
+    top: height * 0.4,
     borderTopLeftRadius: 45,
     borderTopRightRadius: 45,
     shadowColor: '#000000',
@@ -171,5 +196,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+  },
+  rentalCard: {
+    backgroundColor: '#f2f2f2',
+    marginVertical: 10,
+    padding: 15,
+    borderRadius: 10,
+  },
+  rentalText: {
+    fontSize: 14,
+    color: '#333',
+  },
+  noRentalsText: {
+    fontSize: 16,
+    color: '#888',
   },
 });

@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from '@expo/vector-icons'; // Importação para os ícones
 
 const { width, height } = Dimensions.get("window");
-const rota = "http://10.111.9.26"
+const rota = "http://10.111.9.84"
 
 export default function Cadastro({}) {
   const navigation = useNavigation();
