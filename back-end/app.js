@@ -5,6 +5,9 @@ const mysql = require("mysql2/promise");
 const bodyparser = require("body-parser");
 const nodemailer = require("nodemailer");
 const { errorMonitor } = require("events");
+const multer = require('multer');
+const fs = require("fs");
+const path = require("path");
 
 const app = express();
 
@@ -13,6 +16,7 @@ require("dotenv").config();
 const porta = 3000;
 app.use(cors());
 app.use(bodyparser.json());
+app.use(express.json({ limit: '1000mb' }));
 
 const pool = mysql.createPool({
   host: `localhost`,
@@ -22,6 +26,95 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 3,
   queueLimit: 0,
+});
+
+// Configuração do multer para uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Pasta onde os arquivos serão salvos
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + path.extname(file.originalname)); // Gera um nome único
+  },
+});
+
+// Configuração para servir arquivos estáticos da pasta "uploads"
+const uploadsDir = path.join(__dirname, "uploads");
+app.use("/uploads", express.static(uploadsDir)); // Agora as imagens serão servidas em /uploads
+
+
+const upload = multer({ storage });
+
+
+// Rota para upload de imagem
+app.post('/uploads/criar/', upload.single('file'), async (req, res) => {
+  const userId = req.body.userId; // Assuma que o ID do usuário é enviado no body
+  const uploadedFile = req.file;
+
+  console.log('Caiu aqui vei')
+
+  if (!uploadedFile) {
+    return res.status(400).json({ error: 'Nenhum arquivo enviado!' });
+  }
+
+  const newFilePath = `/uploads/${uploadedFile.filename}`;
+
+  try {
+    // Obtém conexão do pool
+    const connection = await pool.getConnection();
+
+    try {
+      // Verifica se já existe uma foto para o usuário
+      const [rows] = await connection.query('SELECT foto FROM cadastro WHERE id = ?', [userId]);
+
+      if (rows.length > 0) {
+        // Substitui a imagem existente
+        const oldFilePath = rows[0].foto ? path.join(__dirname, rows[0].foto) : null;
+
+        await connection.query('UPDATE cadastro SET foto = ? WHERE id = ?', [newFilePath, userId]);
+
+        // Remove o arquivo antigo, se existir
+        if (oldFilePath && fs.existsSync(oldFilePath)) {
+          fs.unlinkSync(oldFilePath);
+        }
+
+        res.status(200).json({ message: 'Foto atualizada com sucesso!', path: newFilePath });
+      } else {
+        // Insere o novo registro
+        await connection.query('INSERT INTO cadastro (id, foto) VALUES (?, ?)', [userId, newFilePath]);
+
+        res.status(201).json({ message: 'Foto salva com sucesso!', path: newFilePath });
+      }
+    } finally {
+      connection.release(); // Libera a conexão de volta para o pool
+    }
+  } catch (error) {
+    console.error('Erro ao acessar o banco de dados:', error);
+    res.status(500).json({ error: 'Erro ao processar a solicitação!' });
+  }
+});
+
+app.post('/upload', async (req, res) => {
+  const { id, foto } = req.body;
+
+  if (!foto) {
+    return res.status(400).send('O campo "foto" precisa ser uma string Base64.');
+  }
+
+  try {
+    const conexao = await pool.getConnection();
+    const query = 'UPDATE cadastro SET foto = ? WHERE id = ?';
+
+    await conexao.execute(query, [foto, id]);
+
+    res.status(200).send('Foto salva com sucesso!');
+  } catch (err) {
+    console.error('Erro ao salvar no banco:', err);
+    res.status(500).send('Erro ao salvar no banco.');
+  } finally {
+    conexao.release();
+  }
 });
 
 // Rota pra consulta
@@ -661,7 +754,7 @@ app.get("/api/local", async (req, res) => {
 });
 
 app.post("/api/selecionar-vaga", async (req, res) => {
-  const { idEstacionamento, descricao } = req.body;
+  const { idEstacionamento, descricao, id_usuario } = req.body;
   console.log(req.body);
 
   if (!idEstacionamento || !descricao) {
@@ -670,13 +763,14 @@ app.post("/api/selecionar-vaga", async (req, res) => {
   const connection = await pool.getConnection();
 
   // Query para buscar a vaga no banco de dados
-  const query = `UPDATE vagas SET STATUS = "1" WHERE Id_Estacionamento = ${idEstacionamento} 
+  const query = `UPDATE vagas SET STATUS = "1", id_usuario = ${id_usuario} WHERE Id_Estacionamento = ${idEstacionamento} 
   AND Descricao = "${descricao}"`;
+
+  console.log(query);
 
   const [linhas] = await connection.execute(query);
   connection.release();
   res.status(200).json({ msg: "Registro gravado!" });
-  
 });
 
 // ROTA PRA CADASTRAR O LOCAL
@@ -724,6 +818,96 @@ app.put("/api/alugar-vaga", async (req, res) => {
     res.status(500).send({ error: "Erro ao alugar a vaga." });
   }
 });
+
+// Rota para verificar vaga reservada
+app.get("/api/verificar-reserva", async (req, res) => {
+  const { id_usuario } = req.query;
+  // console.log("Rota de verificar-reserva")
+  if (!id_usuario) {
+    return res.status(400).json({ message: "ID do usuário não informado." });
+  }
+
+  try {
+    const connection = await pool.getConnection();
+    const query = `SELECT Id_Estacionamento, Descricao, Status, id_usuario 
+                   FROM vagas WHERE id_usuario = ? AND Status = "1"`;
+    const [results] = await connection.execute(query, [id_usuario]);
+    connection.release();
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: "Nenhuma vaga reservada." });
+    }
+
+    res.status(200).json(results[0]);
+  } catch (error) {
+    console.error("Erro ao buscar reserva:", error);
+    res.status(500).json({ message: "Erro ao verificar reserva." });
+  }
+});
+
+// Rota para selecionar vaga
+app.post("/api/selecionar-vaga", async (req, res) => {
+  const { idEstacionamento, descricao, id_usuario } = req.body;
+
+  if (!idEstacionamento || !descricao || !id_usuario) {
+    return res.status(400).json({ message: "Dados incompletos." });
+  }
+
+  try {
+    const connection = await pool.getConnection();
+    const query = `UPDATE vagas SET STATUS = "1", id_usuario = ? 
+                   WHERE Id_Estacionamento = ? AND Descricao = ?`;
+    const [result] = await connection.execute(query, [
+      id_usuario,
+      idEstacionamento,
+      descricao,
+    ]);
+    connection.release();
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Vaga não encontrada." });
+    }
+
+    res.status(200).json({ message: "Vaga selecionada com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao selecionar vaga:", error);
+    res.status(500).json({ message: "Erro ao selecionar vaga." });
+  }
+});
+
+// Rota para liberar vaga
+app.post("/api/liberar-vaga", async (req, res) => {
+  const { id_usuario } = req.body;
+  console.log(req.body)
+  if (!id_usuario) {
+    return res.status(400).json({ message: "Dados incompletos." });
+  }
+
+  try {
+    const connection = await pool.getConnection();
+    const query = `UPDATE vagas SET STATUS = NULL, id_usuario = NULL 
+                   WHERE id_usuario = ?`;
+    const [result] = await connection.execute(query, [
+      id_usuario,
+    ]);
+    connection.release();
+
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({
+          message:
+            "Vaga não encontrada ou não está reservada para este usuário.",
+        });
+    }
+
+    res.status(200).json({ message: "Vaga liberada com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao liberar vaga:", error);
+    res.status(500).json({ message: "Erro ao liberar vaga." });
+  }
+});
+
 
 app.listen(process.env.SERVE, () =>
   console.log(`ver rodando em porta ${process.env.SERVE}`)
