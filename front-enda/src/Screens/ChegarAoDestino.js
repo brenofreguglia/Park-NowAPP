@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Alert, ScrollView } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Alert, ScrollView, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import * as Progress from 'react-native-progress';  // Certifique-se de ter esta dependência instalada
+import * as Progress from 'react-native-progress';
 
 const { width, height } = Dimensions.get("window");
 
-const rota = "http://10.111.9.84:3000";
+const rota = "http://10.111.9.114:3000";
 
 export default function ChegarAoDestino() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { vagaId = "" } = route.params || {};
+  const { vagaId = "", nomeLocal = "Local Não Informado" } = route.params || {};
 
-  const [tempo, setTempo] = useState(1200);  // Tempo em segundos (20 minutos)
+  const [tempo, setTempo] = useState(1200);
 
   useEffect(() => {
     if (vagaId) {
-      setTempo(1200); // Se mudar a vagaId, resetar o tempo
+      setTempo(1200);
     }
   }, [vagaId]);
 
@@ -36,7 +36,7 @@ export default function ChegarAoDestino() {
       setTempo((prev) => prev - 1);
     }, 1000);
 
-    return () => clearInterval(interval);  // Limpar o intervalo quando o componente for desmontado
+    return () => clearInterval(interval);
   }, [tempo, navigation, vagaId]);
 
   const liberarVaga = async () => {
@@ -75,12 +75,11 @@ export default function ChegarAoDestino() {
     );
   };
 
-  // Função para calcular a cor da barra de progresso com base no tempo restante
   const calcularCorProgresso = () => {
     const progress = calcularProgresso();
-    if (progress > 0.5) return "#000000"; // verde
-    if (progress > 0.2) return "#FFCC00"; // amarelo
-    return "#FF6347"; // vermelho
+    if (progress > 0.5) return "#fffdfd";
+    if (progress > 0.2) return "#FFCC00";
+    return "#FF6347";
   };
 
   return (
@@ -92,20 +91,24 @@ export default function ChegarAoDestino() {
         <Ionicons name="arrow-back" size={24} color="#000" />
       </TouchableOpacity>
 
-      <Text style={styles.headerText}>Nome do Local:</Text>
+      {/* Nome do Local no Topo */}
+      <Text style={styles.localName}>{nomeLocal}</Text>
 
       <View style={styles.progressContainer}>
         <Progress.Circle
           progress={calcularProgresso()}
-          size={120}
-          color={calcularCorProgresso()} // Cor do progresso baseada no tempo restante
-          unfilledColor="#D2F0EE"
+          size={200}
+          color={calcularCorProgresso()}
+          unfilledColor="#000000"
           borderWidth={0}
-          thickness={5}
+          thickness={10}
           style={styles.circularProgress}
         />
         <View style={styles.iconContainer}>
-          <Ionicons name="car-outline" size={60} color="#000" />
+          <Image
+            style={styles.img}
+            source={require("../../assets/Imgs/carrinho.png")}
+          />
         </View>
       </View>
 
@@ -142,6 +145,13 @@ const styles = StyleSheet.create({
     top: 50,
     left: 20,
   },
+  localName: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#000",
+    marginTop: 90,
+    textAlign: "center",
+  },
   headerText: {
     fontSize: 20,
     fontWeight: "bold",
@@ -160,6 +170,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignItems: "center",
     justifyContent: "center",
+  },
+  img: {
+    height: 120,
+    width: 120,
   },
   scrollContent: {
     flexGrow: 1,

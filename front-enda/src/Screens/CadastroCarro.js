@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get('window');
 
-const rota = "http://10.111.9.84"
+const rota = "http://10.111.9.114"
 
 export default function CadastroVeiculo() {
   const navigation = useNavigation();
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     width: width,
     marginBottom: 30,
-    margin: 20,
+    margin: 0,
     backgroundColor: "#d2f0ee",
     padding: 10,
     borderRadius: 20,
@@ -196,8 +196,9 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 25,
     width: '80%',
-    alignItems: 'center',
     marginTop: 20,
+    alignSelf: "center"
+
   },
   buttonText: {
     color: '#fff',
@@ -208,7 +209,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#73D2C0', // Cor de fundo do formulário
     padding: 35,
     width: width,
-    height: height * 0.63,
-    borderRadius: 50,
+    height: height * 0.6,
+    margin: -30,
+    borderTopEndRadius: 30,
+    borderTopStartRadius: 30,
+    alignItems: "center"
   },
 });

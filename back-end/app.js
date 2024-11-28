@@ -660,26 +660,23 @@ app.get("/api/local", async (req, res) => {
   }
 });
 
-app.post("/api/reservarVaga", async (req, res) => {
-  const { id_vaga, status } = req.body;
+app.post("/api/selecionar-vaga", async (req, res) => {
+  const { idEstacionamento, descricao } = req.body;
+  console.log(req.body);
 
-  if (!id_vaga || typeof status === "undefined") {
-    return res.status(400).json({ message: "Parâmetros inválidos" });
+  if (!idEstacionamento || !descricao) {
+    return res.status(400).json({ message: "Dados incompletos." });
   }
+  const connection = await pool.getConnection();
 
-  try {
-    const query = "UPDATE vagas SET Status = ? WHERE Id_Estacionamento = ?";
-    const [result] = await pool.query(query, [status, id_vaga]);
+  // Query para buscar a vaga no banco de dados
+  const query = `UPDATE vagas SET STATUS = "1" WHERE Id_Estacionamento = ${idEstacionamento} 
+  AND Descricao = "${descricao}"`;
 
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Vaga não encontrada" });
-    }
-
-    res.status(200).json({ message: "Vaga atualizada com sucesso" });
-  } catch (error) {
-    console.error("Erro ao atualizar vaga:", error);
-    res.status(500).json({ message: "Erro no servidor" });
-  }
+  const [linhas] = await connection.execute(query);
+  connection.release();
+  res.status(200).json({ msg: "Registro gravado!" });
+  
 });
 
 // ROTA PRA CADASTRAR O LOCAL
@@ -727,8 +724,6 @@ app.put("/api/alugar-vaga", async (req, res) => {
     res.status(500).send({ error: "Erro ao alugar a vaga." });
   }
 });
-
-
 
 app.listen(process.env.SERVE, () =>
   console.log(`ver rodando em porta ${process.env.SERVE}`)

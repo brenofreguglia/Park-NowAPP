@@ -7,7 +7,7 @@ import { Texto } from '../Componentes/Textos';
 
 const { height, width } = Dimensions.get('window');
 
-const rota = "http://10.111.9.84:3000"; // Certifique-se de que a URL está correta!
+const rota = "http://10.111.9.114:3000"; // Certifique-se de que a URL está correta!
 
 export default function Perfil({ handleLogout }) {
   const [userName, setUserName] = useState('');

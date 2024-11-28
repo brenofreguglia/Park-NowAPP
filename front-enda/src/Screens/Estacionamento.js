@@ -15,7 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");
-const rota = "http://10.111.9.84:3000";
+const rota = "http://10.111.9.114:3000";
 
 export default function SelecionarVaga() {
   const navigation = useNavigation();
@@ -38,8 +38,7 @@ export default function SelecionarVaga() {
           const responseVagas = await fetch(
             `${rota}/api/vagas?id_lugar=${id_lugar}`
           );
-          const dataVagas = await responseVagas.json(); 
-
+          const dataVagas = await responseVagas.json();
           // Buscando o local, incluindo a URL da imagem
           const responseLocal = await fetch(
             `${rota}/api/local?id_lugar=${id_lugar}`
@@ -72,46 +71,75 @@ export default function SelecionarVaga() {
   );
 
   // Função para selecionar uma vaga
-  const selecionarVaga = (id) => {
-    setVagaSelecionada(id === vagaSelecionada ? null : id); // Desmarca se clicar novamente
+  const selecionarVaga = async (idEstacionamento, descricao) => {
+    try {
+      if (idEstacionamento === vagaSelecionada?.idEstacionamento) {
+        setVagaSelecionada(null); // Desmarca a vaga se clicada novamente
+        return;
+      }
+  
+      const dados = {
+        idEstacionamento,
+        descricao,
+      };
+  
+      const response = await fetch(`${rota}/api/selecionar-vaga`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dados),
+      });
+  
+      if (response.ok) {
+        const vaga = await response.json();
+        setVagaSelecionada({ idEstacionamento, descricao }); // Atualiza o estado com a vaga selecionada
+        navigation.navigate("Destino", {
+          vagaId: idEstacionamento,
+          nomeLocal: local?.nome || "Nome do Local",
+        });
+        
+        console.log("Vaga selecionada com sucesso:", vaga);
+      } else {
+        const errorData = await response.json();
+        console.error("Erro no backend:", errorData.message);
+        Alert.alert("Erro", errorData.message || "Não foi possível selecionar a vaga.");
+      }
+    } catch (error) {
+      console.error("Erro ao tentar selecionar a vaga:", error);
+      Alert.alert("Erro", "Houve um problema ao tentar selecionar a vaga.");
+    }
   };
-
-  // Função para confirmar a seleção
+  
   const confirmarSelecao = () => {
     if (!vagaSelecionada) {
       Alert.alert("Atenção", "Selecione uma vaga antes de confirmar.");
       return;
     }
-
+  
     Alert.alert(
       "Confirmar Seleção",
-      `Você selecionou a vaga ${vagaSelecionada}. Deseja confirmar?`,
+      `Você selecionou a vaga ${vagaSelecionada.descricao}. Deseja confirmar?`,
       [
         { text: "Cancelar", style: "cancel" },
         {
           text: "Confirmar",
           onPress: () => {
-            setVagas((prevVagas) =>
-              prevVagas.map((vaga) =>
-                vaga.Id_Estacionamento === vagaSelecionada
-                  ? { ...vaga, Status: true } // Marca como ocupada
-                  : vaga
-              )
-            );
-            setVagaSelecionada(null); // Limpa a seleção após confirmar
-            Alert.alert("Sucesso", "A vaga foi confirmada e está ocupada.");
-
-            // Redireciona para a tela "Chegada ao Destino"
-            navigation.navigate("Destino", { vagaId: vagaSelecionada });
+            Alert.alert("Sucesso", "A vaga foi confirmada!");
+            navigation.navigate("Destino", {
+              vagaId: vagaSelecionada.idEstacionamento,
+              nomeLocal: local?.nome || "Nome do Local",
+            });
           },
         },
       ]
     );
   };
+  
+  
 
   return (
     <View style={styles.container}>
-      {/* Cabeçalho fixo no topo */}
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.navigate("Menu")}
@@ -122,16 +150,13 @@ export default function SelecionarVaga() {
         <Text style={styles.headerTitle}>{nome}</Text>
       </View>
 
-      {/* Imagem de fundo */}
       <ImageBackground
         source={local?.url ? { uri: local.url } : null}
         style={styles.imageBackground}
         resizeMode="cover"
       />
 
-      {/* Card contendo a lista de vagas */}
       <View style={styles.card}>
-        {/* Restante do código permanece igual */}
         {isLoading ? (
           <ActivityIndicator size="large" color="#000" style={styles.loader} />
         ) : (
@@ -139,31 +164,26 @@ export default function SelecionarVaga() {
             <FlatList
               data={vagas}
               numColumns={3}
-              keyExtractor={(item, index) =>
-                `${item.Id_Estacionamento}-${item.Descricao}-${index}`
-              }
+              keyExtractor={(item) => `${item.Id_Estacionamento}-${item.Descricao}`}
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  onPress={() => selecionarVaga(item.Id_Estacionamento)}
-                  style={[
-                    styles.vagaItem,
-                    item.Status
-                      ? styles.vagaOcupada
-                      : vagaSelecionada === item.Id_Estacionamento
-                      ? styles.vagaSelecionada
-                      : styles.vagaLivre,
-                  ]}
-                >
-                  {item.Status ? (
-                    <Ionicons
-                      name="car-sport-sharp"
-                      size={24}
-                      color="#73D2C0"
-                    />
-                  ) : (
-                    <Text style={styles.vagaText}>{item.Descricao}</Text>
-                  )}
-                </TouchableOpacity>
+                onPress={() => selecionarVaga(item.Id_Estacionamento, item.Descricao)}
+                style={[
+                  styles.vagaItem,
+                  item.Status
+                    ? styles.vagaOcupada
+                    : vagaSelecionada?.idEstacionamento === item.Id_Estacionamento
+                    ? styles.vagaSelecionada
+                    : styles.vagaLivre,
+                ]}
+              >
+                {item.Status ? (
+                  <Ionicons name="car-sport-sharp" size={24} color="#73D2C0" />
+                ) : (
+                  <Text style={styles.vagaText}>{item.Descricao}</Text>
+                )}
+              </TouchableOpacity>
+              
               )}
               ListEmptyComponent={
                 <Text style={styles.emptyMessage}>
@@ -243,13 +263,13 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   vagaLivre: {
-    backgroundColor: "#73D2C0",
+    backgroundColor: "#73D2C0", // Verde
   },
   vagaSelecionada: {
-    backgroundColor: "#FFD700",
+    backgroundColor: "#A9A9A9", // Cinza
   },
   vagaOcupada: {
-    backgroundColor: "#000",
+    backgroundColor: "#000", // Preto
   },
   vagaText: {
     fontSize: 16,

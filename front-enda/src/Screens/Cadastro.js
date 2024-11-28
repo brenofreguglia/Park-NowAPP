@@ -6,20 +6,20 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from '@expo/vector-icons'; // Importação para os ícones
 
 const { width, height } = Dimensions.get("window");
-const rota = "http://10.111.9.84"
+const rota = "http://10.111.9.114"
 
 export default function Cadastro({}) {
   const navigation = useNavigation();
 
   const [form, setForm] = useState({
-    nome: 'Park',
-    sobrenome: 'Now',
-    email: 'ParkNow@gmail.com',
-    senha: 'Sesisenaisp914#',
-    telefone: '18998165080',
-    cpf: '46270934893',
-    endereco: 'rua teste',
-    cep: '19063755'
+    nome: '',
+    sobrenome: '',
+    email: '',
+    senha: '',
+    telefone: '',
+    cpf: '',
+    endereco: '',
+    cep: ''
   });
 
   const [errors, setErrors] = useState({});

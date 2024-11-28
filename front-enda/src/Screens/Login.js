@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window');
-const rota = "http://10.111.9.84:3000";
+const rota = "http://10.111.9.114:3000";
 // const rota = "http://192.168.144.172:3000";
 
 export default function Login() {
@@ -136,7 +136,7 @@ export default function Login() {
           />
              <Texto
             acao={irParaSenha}
-            msg={`Esqueçeu Senha!`}
+            msg={`Esqueceu Senha!`}
             tamanho={15}
             margin={10}
             padding={20}
