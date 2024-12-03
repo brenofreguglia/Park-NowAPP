@@ -32,11 +32,30 @@ CREATE TABLE IF NOT EXISTS `automovel` (
   PRIMARY KEY (`id`),
   KEY `FK_automovel_tipo_automovel` (`tipo_veiculo`),
   CONSTRAINT `FK_automovel_tipo_automovel` FOREIGN KEY (`tipo_veiculo`) REFERENCES `tipo_automovel` (`id_veiculo`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Copiando dados para a tabela parknow.automovel: ~1 rows (aproximadamente)
+-- Copiando dados para a tabela parknow.automovel: ~20 rows (aproximadamente)
 INSERT INTO `automovel` (`id`, `tipo_veiculo`, `placa`, `marca`, `modelo`, `cor`) VALUES
-	(1, 1, 'BRA2E19', 'Marca Exemplo', 'Modelo Exemplo', 'Cor Exemplo');
+	(1, 1, 'BRA2E19', 'Marca Exemplo', 'Modelo Exemplo', 'Cor Exemplo'),
+	(2, 1, 'ABC1D23', 'Toyota', 'Corolla', 'Preto'),
+	(3, 1, 'XYZ4A56', 'Honda', 'Civic', 'Branco'),
+	(4, 1, 'LMN7B89', 'Chevrolet', 'Onix', 'Prata'),
+	(5, 1, 'QRS3C12', 'Volkswagen', 'Gol', 'Azul'),
+	(6, 1, 'TUV9D34', 'Ford', 'Fiesta', 'Vermelho'),
+	(7, 1, 'GHI5E67', 'Fiat', 'Argo', 'Cinza'),
+	(8, 1, 'JKL2F89', 'Hyundai', 'HB20', 'Branco'),
+	(9, 1, 'MNO6G23', 'Nissan', 'March', 'Preto'),
+	(10, 1, 'PQR8H12', 'Renault', 'Kwid', 'Amarelo'),
+	(11, 1, 'STU1I45', 'Kia', 'Seltos', 'Verde'),
+	(12, 2, 'MNB1A23', 'Honda', 'CB500X', 'Preta'),
+	(13, 2, 'XYZ4B56', 'Yamaha', 'Fazer 250', 'Azul'),
+	(14, 2, 'ABC2C34', 'Suzuki', 'GSX-S1000', 'Vermelho'),
+	(15, 2, 'DEF3D45', 'Kawasaki', 'Ninja 300', 'Verde'),
+	(16, 2, 'GHI6E78', 'BMW', 'G310R', 'Branca'),
+	(17, 2, 'JKL8F90', 'Ducati', 'Monster 821', 'Preto'),
+	(18, 1, 'LMN4B89', 'Jeep', 'Compass', 'Cinza'),
+	(19, 1, 'OPQ7G56', 'Mitsubishi', 'L200', 'Prata'),
+	(20, 1, 'RST1H89', 'Peugeot', '308', 'Azul');
 
 -- Copiando estrutura para tabela parknow.cadastro
 DROP TABLE IF EXISTS `cadastro`;
@@ -54,15 +73,35 @@ CREATE TABLE IF NOT EXISTS `cadastro` (
   `verification_expires` datetime DEFAULT NULL,
   `foto` longtext DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Copiando dados para a tabela parknow.cadastro: ~5 rows (aproximadamente)
+-- Copiando dados para a tabela parknow.cadastro: ~25 rows (aproximadamente)
 INSERT INTO `cadastro` (`id`, `nome`, `sobrenome`, `cpf`, `endereco`, `cep`, `telefone`, `email`, `senha`, `verification_code`, `verification_expires`, `foto`) VALUES
 	(1, 'breno', 'freguglia', '46270934893', 'Rua Teste Bom', '19160000', '18998165080', 'freguglia.breno@gmail.com', 'e11de52efa5a50b0da9f5b1e5707755e7cd36737b173b524ce9068da50e99579', '941619', '2024-10-03 14:30:39', NULL),
 	(2, 'Samuel', 'Caliel', '46270934893', 'rua teste miçl', '19067755', '18998165080', 'samuelcaliel69@gmail.com', 'a5eaa5e6cb269a776bf1a7f0c617b1ab3e5bc19a06a86df18ffd732803471970', '386669', '2024-09-19 14:44:26', NULL),
 	(3, 'Jorge', 'Gabriel', '46270934893', 'rua teste jorge', '19065755', '18998165080', 'jorgegabrielcdsantos@gmail.com', '36c6ee3db1019c0a9270ac2e0688809d28f48754e3007885e7ec096f2bbab194', '779836', '2024-09-19 14:47:51', NULL),
 	(4, 'Park', 'Now', '46270934893', 'rua teste', '19063755', '18998165080', 'ParkNow@gmail.com', '4b1bbf296030151c43cb56140970a87f1832a3dd7b5d1e91014b43ab9ff07ecd', NULL, NULL, NULL),
-	(5, 'Kauana', 'Ribas Silva ', '46248818851', 'Rua: Antônio claro n40', '19027240', '18991389219', 'ribassilvak@gmail.com', '9a6dcfb7d159160d1f5a14cd3a3229acb2e286092346ab412fb21e548ab1a272', NULL, NULL, NULL);
+	(5, 'Kauana', 'Ribas Silva ', '46248818851', 'Rua: Antônio claro n40', '19027240', '18991389219', 'ribassilvak@gmail.com', '9a6dcfb7d159160d1f5a14cd3a3229acb2e286092346ab412fb21e548ab1a272', NULL, NULL, NULL),
+	(6, 'Ana', 'Souza', '26471840928', 'Rua das Flores, 123', '19123456', '19988765432', 'ana.souza@gmail.com', 'ab28ed1927d2d3a1fb53dbb7e44c2b7e1c95b3c8373f800cb73e03f6482b05fc', '436879', '2024-11-25 11:55:12', NULL),
+	(7, 'Carlos', 'Oliveira', '12456998734', 'Avenida Brasil, 2200', '19130000', '18997654321', 'carlos.oliveira@gmail.com', 'd199fe603af2c88b80b62e090d3c8c44bcebd2ed601478635bfc4955d1959ab1', '567823', '2024-10-20 16:05:23', NULL),
+	(8, 'Marta', 'Silva', '15789234567', 'Rua do Sol, 450', '19041710', '19876543210', 'marta.silva@gmail.com', 'e02bf1a14f3d01b1bb234dbf3a87686f1a43713c62762a0a2d809f469db98fd3', '672342', '2024-11-11 09:30:09', NULL),
+	(9, 'Lucas', 'Lima', '28713456543', 'Rua Santa Clara, 88', '19087766', '19983456789', 'lucas.lima@gmail.com', '4d5c47bfe233e2e6c6b23b08ed1ac768f9b32cb7b85c346926fd7f524c607e6c', '476251', '2024-10-18 17:42:33', NULL),
+	(10, 'Fernanda', 'Costa', '24578903211', 'Avenida Nova, 177', '19084567', '19878654321', 'fernanda.costa@gmail.com', 'a76fbd5297e8ab56cbb55762f12aadaf5ec9cfa1aefde75f6d9bb34a16b3a410', '982336', '2024-09-30 14:51:14', NULL),
+	(11, 'João', 'Pereira', '19876543210', 'Rua dos Lírios, 300', '19122000', '19891234567', 'joao.pereira@gmail.com', '4b10a5deef2d7fbd6a09367b1d383f6971093e98a60b9d017509cb4472168d47', '564213', '2024-11-02 12:00:50', NULL),
+	(12, 'Paula', 'Almeida', '34567898765', 'Rua das Palmeiras, 222', '19035500', '19986543210', 'paula.almeida@gmail.com', 'ff72b6a3246d29fc2f042923078e9f38d10f81cc83d9e209c5e2a7b9da5a8cfe', '238564', '2024-10-13 16:20:40', NULL),
+	(13, 'Ricardo', 'Santos', '35746989234', 'Rua São João, 170', '19180000', '18993456789', 'ricardo.santos@gmail.com', '5a6bf92169f8f15606b8fa8b6de2b47c915f1d7ed8e23838eae1ff775fd1ad5d', '864931', '2024-12-01 18:14:22', NULL),
+	(14, 'Luana', 'Pires', '47832901987', 'Rua Sete, 58', '19058765', '19898876543', 'luana.pires@gmail.com', 'ae13b8cd104f0dcd5e8d25c9a823071d39411f51c9eb65a7fae7ed815c0ad65c', '329847', '2024-10-22 15:45:01', NULL),
+	(15, 'Thiago', 'Ferreira', '56483917430', 'Rua São Paulo, 100', '19090777', '19994432098', 'thiago.ferreira@gmail.com', '9f573f90d83be9b3ad6a7fe22fc01050eb122fda9a67a6f07cc48a02b58f2211', '928364', '2024-09-23 13:36:28', NULL),
+	(16, 'Mariana', 'Cardoso', '56893457421', 'Avenida das Américas, 256', '19190500', '18998765432', 'mariana.cardoso@gmail.com', '32a8593dbb47b9e6aaf80a9fbb01d7fd6a9b7fe29b8b8f6982f8d54a4b98f7d9', '631208', '2024-11-06 11:18:59', NULL),
+	(17, 'Gabriel', 'Mendes', '19876203918', 'Rua Rio Branco, 88', '19095511', '19988765432', 'gabriel.mendes@gmail.com', 'c52085ac9709dbffb890639a5f63d56e3ed7f1497d5199cc5f6ec01f7b3d392f', '342617', '2024-10-14 19:28:33', NULL),
+	(18, 'Tatiane', 'Gomes', '14759384721', 'Rua da Paz, 340', '19060500', '19991324678', 'tatiane.gomes@gmail.com', 'cf6c5d9f5e8de6735408f0f6162a99f1707ed8909a3a4bbd7e54a2bb0576d2fa', '531726', '2024-11-17 08:34:45', NULL),
+	(19, 'Eduardo', 'Martins', '37864591234', 'Avenida Kennedy, 800', '19047000', '18995764213', 'eduardo.martins@gmail.com', 'fd32eb2e2c3e44697eaf7b1bcd5be8240db084ca13a9c7b9f78f7f10e8f6d520', '754217', '2024-12-05 10:02:34', NULL),
+	(20, 'Sônia', 'Oliveira', '29854137021', 'Rua dos Oitis, 60', '19081000', '19995564321', 'sonia.oliveira@gmail.com', '92c4173887c1c8a66dbd08d5449b62ea7d42c38a328543dffad8e5714b6da49a', '824509', '2024-09-28 09:56:21', NULL),
+	(21, 'Felipe', 'Melo', '26718394057', 'Rua do Norte, 114', '19085555', '19987364532', 'felipe.melo@gmail.com', '693f264b5245a9531c627cbecff4656739cae826c4f5a1cc888bc8e6f43c207', '653459', '2024-10-21 17:43:05', NULL),
+	(22, 'Vanessa', 'Ribeiro', '23645781234', 'Avenida Norte, 600', '19100200', '18994321098', 'vanessa.ribeiro@gmail.com', 'd5e0409e6fd3b9f90cb6db67be60c3cb22ad7d9a1683032d8f7844655cf6d039', '428576', '2024-12-07 12:45:19', NULL),
+	(23, 'Vinícius', 'Araújo', '45623198765', 'Rua do Limoeiro, 55', '19099899', '19992456321', 'vinicius.araujo@gmail.com', 'cc4f593b915907a4916d108472d0f30a41db5a8f8f1ab8c3be1b2d8ac50de003', '978643', '2024-10-29 10:18:56', NULL),
+	(24, 'Raul', 'Santos', '23648932756', 'Rua dos Jacarandás, 45', '19072555', '19876543210', 'raul.santos@gmail.com', 'd743a2aeb758c5c1595377b1234a4d0210a42fcb8695e3c6c401e4b7460fc0e8', '126482', '2024-11-01 08:50:14', NULL),
+	(25, 'Lúcia', 'Alves', '42873209865', 'Rua da Vitória, 25', '19022550', '18999123456', 'lucia.alves@gmail.com', 'c3345d72d5cb5cb2a3138552284ad2561c9ec06e9c157519631b53ff2f079bd2', '301947', '2024-09-24 14:07:40', NULL);
 
 -- Copiando estrutura para tabela parknow.hist_vagas_usuarios
 DROP TABLE IF EXISTS `hist_vagas_usuarios`;
@@ -78,12 +117,14 @@ CREATE TABLE IF NOT EXISTS `hist_vagas_usuarios` (
   KEY `FK_hist_vagas_usuarios_vagas` (`id_estacionamento`) USING BTREE,
   CONSTRAINT `FK_hist_vagas_usuarios_cadastro` FOREIGN KEY (`id_usuario`) REFERENCES `cadastro` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_hist_vagas_usuarios_vagas` FOREIGN KEY (`id_estacionamento`) REFERENCES `vagas` (`Id_Estacionamento`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='historico de vagas ocupadas por usuarios ativados por trigger';
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='historico de vagas ocupadas por usuarios ativados por trigger';
 
 -- Copiando dados para a tabela parknow.hist_vagas_usuarios: ~2 rows (aproximadamente)
 INSERT INTO `hist_vagas_usuarios` (`id`, `id_usuario`, `id_estacionamento`, `descricao`, `status`, `data_hora`) VALUES
 	(11, 1, 1, 'A1', 'Ocupou Vaga', '2024-11-28 18:55:47'),
-	(12, 1, 1, 'A1', 'Liberou Vaga', '2024-11-28 18:56:22');
+	(12, 1, 1, 'A1', 'Liberou Vaga', '2024-11-28 18:56:22'),
+	(13, 1, 1, 'B2', 'Ocupou Vaga', '2024-12-03 14:12:31'),
+	(14, 1, 1, 'B2', 'Liberou Vaga', '2024-12-03 15:43:35');
 
 -- Copiando estrutura para tabela parknow.local
 DROP TABLE IF EXISTS `local`;
@@ -99,9 +140,9 @@ CREATE TABLE IF NOT EXISTS `local` (
   `longitude` decimal(9,6) DEFAULT NULL,
   `url` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`id_lugar`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Copiando dados para a tabela parknow.local: ~11 rows (aproximadamente)
+-- Copiando dados para a tabela parknow.local: ~23 rows (aproximadamente)
 INSERT INTO `local` (`id_lugar`, `nome`, `cidade`, `endereco`, `cep`, `vagas`, `func_horario`, `latitude`, `longitude`, `url`) VALUES
 	(1, 'PrudenShopping', 'Pres. Prudente', 'Rua Teste Alfa', '19060-00', 300, '10h - 22h', -22.115200, -51.407620, 'https://static.wixstatic.com/media/933b9f_f087829258f04952ae2d8889b3635ad8~mv2.jpg/v1/fill/w_824,h_336,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/bg-ps.jpg'),
 	(2, 'Senai', 'pp', 'Rparknowota do Sol', '19063-75', 300, '10h-22h', -23.550520, -46.633308, 'https://s2.glbimg.com/56jxpSza-HP37aDNVyN0zdp5dyE=/1200x630/s.glbimg.com/jo/g1/f/original/2016/05/10/486625_136675269837507_988397478_n.jpg'),
@@ -113,7 +154,19 @@ INSERT INTO `local` (`id_lugar`, `nome`, `cidade`, `endereco`, `cep`, `vagas`, `
 	(8, 'Terminal Rodoviário de Presidente Prudente', 'Presidente Prudente', 'Rua Doutor José Foz, 188', '19010-29', 250, 'Aberto 24 horas', -22.124207, -51.388045, 'https://s2-g1.glbimg.com/qWDeu48Nqc7olaeNBBYLarK5KcA=/0x0:1600x900/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2022/k/r/FlRJD8TdCAELerppLqfg/whatsapp-image-2022-03-04-at-11.07.05-1-.jpeg'),
 	(9, 'Academia Flex', 'Presidente Prudente', 'Avenida Juscelino Kubitschek, 1234', '19020-30', 150, '06:00 - 22:00', -22.114500, -51.400900, 'https://flexacademia.com.br/flexbuena/wp-content/uploads/2020/12/FlexFitnessCenter_by_NelsonPacheco_022-1024x683.jpg'),
 	(10, 'Parque Natural Municipal', 'Presidente Prudente', 'Avenida Marginal, s/n', '19060-20', 100, '06:00 - 18:00', -22.125890, -51.399080, 'https://www.presidenteprudente.sp.gov.br/site/imagem/102003'),
-	(11, 'Restaurante Sabor & Cia', 'Presidente Prudente', 'Rua dos Três Corações, 567', '19040-40', 80, '11:00 - 23:00', -22.116780, -51.390870, 'https://img-anuncio.listamais.com.br/internas/111616.jpg');
+	(11, 'Restaurante Sabor & Cia', 'Presidente Prudente', 'Rua dos Três Corações, 567', '19040-40', 80, '11:00 - 23:00', -22.116780, -51.390870, 'https://img-anuncio.listamais.com.br/internas/111616.jpg'),
+	(12, 'Bosque Municipal de Presidente Prudente', 'Presidente Prudente', 'Rua José Bongiovani, 300', '19020-10', 150, '07:00 - 18:00', -22.119300, -51.385600, 'https://www.presidenteprudente.sp.gov.br/site/imagem/102004'),
+	(13, 'Praça Nove de Julho', 'Presidente Prudente', 'Centro', '19015-10', 100, 'Aberto 24 horas', -22.122800, -51.388700, 'https://www.presidenteprudente.sp.gov.br/site/imagem/102005'),
+	(14, 'Museu e Arquivo Histórico Municipal', 'Presidente Prudente', 'Rua Ribeiro de Barros, 777', '19013-10', 50, '08:00 - 17:00', -22.118700, -51.388000, 'https://museuhistoriapp.com.br/imagem.jpg'),
+	(15, 'Catedral São Sebastião', 'Presidente Prudente', 'Praça Monsenhor Sarrion, 100', '19010-30', 120, '06:00 - 20:00', -22.124000, -51.390000, 'https://www.catedralpp.com.br/imagem.jpg'),
+	(16, 'Centro de Eventos IBC', 'Presidente Prudente', 'Rodovia Raposo Tavares, km 561', '19053-40', 500, '08:00 - 22:00', -22.145000, -51.455000, 'https://www.ibc.com.br/imagem.jpg'),
+	(17, 'Thermas de Presidente Epitácio', 'Presidente Epitácio', 'Estrada do Balneário', '19470-00', 300, '08:00 - 18:00', -21.757900, -52.117800, 'https://www.thermasepitacio.com.br/imagem.jpg'),
+	(18, 'Rio Paraná - Orla de Presidente Epitácio', 'Presidente Epitácio', 'Avenida Dom Pedro II', '19470-00', 400, 'Aberto 24 horas', -21.763000, -52.120300, 'https://www.orlaepitacio.com.br/imagem.jpg'),
+	(19, 'Parque Estadual do Rio do Peixe', 'Martinópolis', 'Rodovia Estadual SP-284, km 56', '19500-00', 200, '07:00 - 18:00', -22.145600, -51.210900, 'https://www.riopeixe.com.br/imagem.jpg'),
+	(20, 'Represa de Martinópolis', 'Martinópolis', 'Estrada do Balneário', '19500-00', 150, 'Aberto 24 horas', -22.146700, -51.210300, 'https://www.represa.com.br/imagem.jpg'),
+	(21, 'Praia Artificial de Rancharia', 'Rancharia', 'Avenida Beira Rio', '19600-00', 250, '08:00 - 18:00', -22.226400, -50.892000, 'https://www.rancharia.com.br/imagem.jpg'),
+	(22, 'Parque Aquático Bom Sucesso', 'Rancharia', 'Rodovia Estadual SP-333, km 74', '19600-00', 350, '08:00 - 20:00', -22.223000, -50.890500, 'https://www.parqueaquatico.com.br/imagem.jpg'),
+	(23, 'Circuito Cinemas', 'Presidente Prudente', ' R. Siqueira Campos, 1545 - Vila Sao Jorge', '19013-03', 300, '11:00 - 23:00', -22.131010, -51.389780, 'https://lh3.googleusercontent.com/p/AF1QipNK5Mr7SwdbsR3URzmL-v6Toz37FXvYYaReuZKD=s1360-w1360-h1020');
 
 -- Copiando estrutura para tabela parknow.tipo_automovel
 DROP TABLE IF EXISTS `tipo_automovel`;
@@ -141,7 +194,7 @@ CREATE TABLE IF NOT EXISTS `vagas` (
   CONSTRAINT `FK_vagas_cadastro` FOREIGN KEY (`id_usuario`) REFERENCES `cadastro` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Copiando dados para a tabela parknow.vagas: ~385 rows (aproximadamente)
+-- Copiando dados para a tabela parknow.vagas: ~480 rows (aproximadamente)
 INSERT INTO `vagas` (`Id_Estacionamento`, `Descricao`, `Status`, `id_usuario`) VALUES
 	(1, 'A1', NULL, NULL),
 	(1, 'A2', NULL, NULL),
@@ -527,7 +580,102 @@ INSERT INTO `vagas` (`Id_Estacionamento`, `Descricao`, `Status`, `id_usuario`) V
 	(4, 'H7', '', NULL),
 	(4, 'H8', '', NULL),
 	(4, 'H9', '', NULL),
-	(4, 'H10', '', NULL);
+	(4, 'H10', '', NULL),
+	(12, 'A1', NULL, NULL),
+	(12, 'A2', NULL, NULL),
+	(12, 'A3', NULL, NULL),
+	(12, 'A4', NULL, NULL),
+	(12, 'A5', NULL, NULL),
+	(12, 'B1', NULL, NULL),
+	(12, 'B2', NULL, NULL),
+	(12, 'B3', NULL, NULL),
+	(12, 'B4', NULL, NULL),
+	(12, 'B5', NULL, NULL),
+	(12, 'C1', NULL, NULL),
+	(12, 'C2', NULL, NULL),
+	(12, 'C3', NULL, NULL),
+	(12, 'C4', NULL, NULL),
+	(12, 'C5', NULL, NULL),
+	(12, 'D1', NULL, NULL),
+	(12, 'D2', NULL, NULL),
+	(12, 'D3', NULL, NULL),
+	(12, 'D4', NULL, NULL),
+	(12, 'D5', NULL, NULL),
+	(13, 'A1', NULL, NULL),
+	(13, 'A2', NULL, NULL),
+	(13, 'A3', NULL, NULL),
+	(13, 'A4', NULL, NULL),
+	(13, 'A5', NULL, NULL),
+	(13, 'B1', NULL, NULL),
+	(13, 'B2', NULL, NULL),
+	(13, 'B3', NULL, NULL),
+	(13, 'B4', NULL, NULL),
+	(13, 'B5', NULL, NULL),
+	(13, 'C1', NULL, NULL),
+	(13, 'C2', NULL, NULL),
+	(13, 'C3', NULL, NULL),
+	(13, 'C4', NULL, NULL),
+	(13, 'C5', NULL, NULL),
+	(13, 'D1', NULL, NULL),
+	(13, 'D2', NULL, NULL),
+	(13, 'D3', NULL, NULL),
+	(13, 'D4', NULL, NULL),
+	(13, 'D5', NULL, NULL),
+	(14, 'A1', NULL, NULL),
+	(14, 'A2', NULL, NULL),
+	(14, 'A3', NULL, NULL),
+	(14, 'A4', NULL, NULL),
+	(14, 'A5', NULL, NULL),
+	(14, 'B1', NULL, NULL),
+	(14, 'B2', NULL, NULL),
+	(14, 'B3', NULL, NULL),
+	(14, 'B4', NULL, NULL),
+	(14, 'B5', NULL, NULL),
+	(14, 'C1', NULL, NULL),
+	(14, 'C2', NULL, NULL),
+	(14, 'C3', NULL, NULL),
+	(14, 'C4', NULL, NULL),
+	(14, 'C5', NULL, NULL),
+	(15, 'A1', NULL, NULL),
+	(15, 'A2', NULL, NULL),
+	(15, 'A3', NULL, NULL),
+	(15, 'A4', NULL, NULL),
+	(15, 'A5', NULL, NULL),
+	(15, 'B1', NULL, NULL),
+	(15, 'B2', NULL, NULL),
+	(15, 'B3', NULL, NULL),
+	(15, 'B4', NULL, NULL),
+	(15, 'B5', NULL, NULL),
+	(15, 'C1', NULL, NULL),
+	(15, 'C2', NULL, NULL),
+	(15, 'C3', NULL, NULL),
+	(15, 'C4', NULL, NULL),
+	(15, 'C5', NULL, NULL),
+	(15, 'D1', NULL, NULL),
+	(15, 'D2', NULL, NULL),
+	(15, 'D3', NULL, NULL),
+	(15, 'D4', NULL, NULL),
+	(15, 'D5', NULL, NULL),
+	(16, 'A1', NULL, NULL),
+	(16, 'A2', NULL, NULL),
+	(16, 'A3', NULL, NULL),
+	(16, 'A4', NULL, NULL),
+	(16, 'A5', NULL, NULL),
+	(16, 'B1', NULL, NULL),
+	(16, 'B2', NULL, NULL),
+	(16, 'B3', NULL, NULL),
+	(16, 'B4', NULL, NULL),
+	(16, 'B5', NULL, NULL),
+	(16, 'C1', NULL, NULL),
+	(16, 'C2', NULL, NULL),
+	(16, 'C3', NULL, NULL),
+	(16, 'C4', NULL, NULL),
+	(16, 'C5', NULL, NULL),
+	(16, 'D1', NULL, NULL),
+	(16, 'D2', NULL, NULL),
+	(16, 'D3', NULL, NULL),
+	(16, 'D4', NULL, NULL),
+	(16, 'D5', NULL, NULL);
 
 -- Copiando estrutura para trigger parknow.vagas_after_update
 DROP TRIGGER IF EXISTS `vagas_after_update`;
