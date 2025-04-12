@@ -1,3 +1,17 @@
+Ideia para o futuro:
+
+- melhorar a interface
+- adicionar mais recursos
+- Fazer o Historico das vagas
+- Colocar a imagem do Cliente
+- Fazer Interface que mostre os carros do cliente.....
+
+
+
+
+
+
+
 Feito:
 
 |Temos quase todas as telas feitas:
@@ -21,7 +35,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const rota = "http://10.111.9.114:3000";
+const rota = "http://192.168.15.17:3000";
 const screenHeight = Dimensions.get('window').height; // Use 'window' para obter a área disponível sem status bar
 const screenWidth = Dimensions.get('window').width;
 

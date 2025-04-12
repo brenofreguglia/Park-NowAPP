@@ -6,7 +6,7 @@ import * as Progress from 'react-native-progress';
 
 const { width, height } = Dimensions.get("window");
 
-const rota = "http://10.111.9.114:3000";
+const rota = "http://192.168.15.17:3000";
 
 export default function ChegarAoDestino() {
   const navigation = useNavigation();

@@ -15,7 +15,7 @@ import MapView, { Marker } from 'react-native-maps';
 import Toast from 'react-native-toast-message';
 import * as Location from 'expo-location';
 
-const rota = "http://10.111.9.114:3000";
+const rota = "http://192.168.15.17:3000";
 const { width } = Dimensions.get('window');
 
 export default function Menu() {
