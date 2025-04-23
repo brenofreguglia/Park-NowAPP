@@ -1,6 +1,6 @@
 ## 🌐 Language | Idioma
 
-[English (Default)](#park-now) | [Português](#park-now---Português)
+[🇬🇧 English (Default)](#park-now) | [🇧🇷 Português](#park-now--portugues)
 
 ---
 
@@ -77,7 +77,7 @@ Feel free to open issues, submit pull requests, or suggest improvements. Let’s
 
 ---
 
-# Park-Now – Português
+# Park-Now -- Portugues
 
 **Park-Now** é um aplicativo mobile desenvolvido com **Expo Go** e **React Native**, criado para facilitar a busca e reserva de vagas de estacionamento. Com uma interface prática e intuitiva, os usuários podem realizar todo o processo de forma rápida e segura.
 
