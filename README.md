@@ -1,6 +1,6 @@
 ## 🌐 Language | Idioma
 
-[🇬🇧 English (Default)](#park-now) | [🇧🇷 Português](#park-now---português)
+[🇬🇧 English (Default)](#park-now) | [🇧🇷 Português](#park-now----português)
 
 ---
 
