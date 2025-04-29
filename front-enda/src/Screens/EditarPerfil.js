@@ -5,7 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const rota = "http://192.168.15.17:3000";
+const rota = "http://192.168.46.146:3000";
 const screenHeight = Dimensions.get('window').height; // Use 'window' para obter a área disponível sem status bar
 const screenWidth = Dimensions.get('window').width;
 
